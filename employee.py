@@ -1,6 +1,6 @@
 import tkinter as tk
 import sqlite3
-from tkinter import messagebox
+from tkinter import Scrollbar, messagebox
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
 
@@ -112,64 +112,53 @@ def clear_entries():
 create_table()
 
 label_id = tk.Label(root, text="ID:")
-label_id.pack(pady=5)
+label_id.grid(row=0, column=0, padx=10, pady=5)
 entry_id = tk.Entry(root)
-entry_id.pack(pady=5)
+entry_id.grid(row=0, column=1, padx=10, pady=5)
 
 label_name = tk.Label(root, text="Name:")
-label_name.pack(pady=5)
+label_name.grid(row=1, column=0, padx=10, pady=5)
 entry_name = tk.Entry(root)
-entry_name.pack(pady=5)
+entry_name.grid(row=1, column=1, padx=10, pady=5)
 
 label_workmail = tk.Label(root, text="WorkMail:")
-label_workmail.pack(pady=5)
+label_workmail.grid(row=2, column=0, padx=10, pady=5)
 entry_workmail = tk.Entry(root)
-entry_workmail.pack(pady=5)
+entry_workmail.grid(row=2, column=1, padx=10, pady=5)
 
 label_phone = tk.Label(root, text="Phone Number:")
-label_phone.pack(pady=5)
+label_phone.grid(row=3, column=0, padx=10, pady=5)
 entry_phone = tk.Entry(root)
-entry_phone.pack(pady=5)
-
+entry_phone.grid(row=3, column=1, padx=10, pady=5)
 
 button_add = tk.Button(root, text="Add Employee", command=add_employee)
-button_add.pack(pady=5)
+button_add.grid(row=4, column=0, columnspan=2, padx=10, pady=5)
 
 button_update = tk.Button(root, text="Update Employee", command=update_employee)
-button_update.pack(pady=5)
+button_update.grid(row=5, column=0, columnspan=2, padx=10, pady=5)
 
 button_delete = tk.Button(root, text="Delete Employee", command=delete_employee)
-button_delete.pack(pady=5)
+button_delete.grid(row=6, column=0, columnspan=2, padx=10, pady=5)
 
 button_show = tk.Button(root, text="Show Employees", command=show_employees)
-button_show.pack(pady=5)
+button_show.grid(row=7, column=0, columnspan=2, padx=10, pady=5)
 
 button_clear = tk.Button(root, text="Clear Entries", command=clear_entries)
-button_clear.pack(pady=5)
+button_clear.grid(row=8, column=0, columnspan=2, padx=10, pady=5)
 
-employee_list = tk.Listbox(root, width=85)
-employee_list.pack(pady=10)
+employee_list = tk.Listbox(root, width=65)
+employee_list.grid(row=0, column=2, rowspan=9, padx=10, pady=10)
 
+scrollbar = tk.Scrollbar(root, orient="vertical")
+scrollbar.grid(row=0, column=3, rowspan=9, sticky="ns")
+
+employee_list.config(yscrollcommand=scrollbar.set)
+scrollbar.config(command=employee_list.yview)
 
 root.mainloop()
 
-
-# BUG REPORT
+## BUG REPORT
 # Editleme yapar iken numara boş olursa numarayı siliyor(bug mı normal mi anlamadım)
 # Arka plana hangi kod eklenirse eklensin resim ya farklı pencerede açılıyor yada butonları görmezden gelip sadece resim açılıyor
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
+# Scrollbar hata veriyor sebebini anlamadım (FIXED)
+# Scrollbar konumlandırılmasında sorun var sağ sola ilerliyor yukarı aşağı konumlanmıyor
