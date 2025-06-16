@@ -1,8 +1,6 @@
 import tkinter as tk
 import sqlite3
-from tkinter import Scrollbar, messagebox
-from tkinter import PhotoImage
-from PIL import Image, ImageTk
+from tkinter import messagebox
 
 database = "employees.db"
 
@@ -76,20 +74,30 @@ def update_employee():
 
 
 def delete_employee():
-    selected_id = entry_id.get()
+    try:
+        selected_id = entry_id.get()
 
-    if selected_id.strip() == "":
-        messagebox.showwarning("Uyarı", "Lütfen silinecek çalışanın ID'sini girin!")
+        print(f"selected_id: {selected_id}")
+
+        conn = sqlite3.connect(database)
+        cursor = conn.cursor()
+
+        result = cursor.execute("DELETE FROM employees WHERE ID = ?", (selected_id,))
+
+        if result.rowcount == 0:
+            messagebox.showwarning("Uyarı", "Silinecek çalışan bulunamadı!")
+            return
+        else:
+            messagebox.showinfo("Mesaj", "Çalışan silindi!")
+        conn.commit()
+    except sqlite3.Error as e:
+        messagebox.showerror("Hata", f"Bir hata oluştu: {e}")
         return
-
-    conn = sqlite3.connect(database)
-    cursor = conn.cursor()
-
-    cursor.execute("DELETE FROM employees WHERE ID = ?", (selected_id,))
-    messagebox.showwarning("Mesaj", "Çalışan silindi!")
-
-    conn.commit()
-    conn.close()
+    except Exception as e:
+        messagebox.showerror("Hata", f"Bir hata oluştu: {e}")
+        return
+    finally:
+        conn.close()
 
 
 def show_employees():
@@ -117,6 +125,7 @@ def clear_entries():
 
 
 create_table()
+
 
 label_id = tk.Label(root, text="ID:")
 label_id.grid(row=0, column=0, padx=10, pady=5)
@@ -155,6 +164,7 @@ button_clear.grid(row=8, column=0, columnspan=2, padx=10, pady=5)
 
 employee_list = tk.Listbox(root, width=65)
 employee_list.grid(row=0, column=2, rowspan=9, padx=10, pady=10)
+
 
 scrollbar = tk.Scrollbar(root, orient="vertical")
 scrollbar.grid(row=0, column=3, rowspan=9, sticky="ns")
