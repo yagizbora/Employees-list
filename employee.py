@@ -176,6 +176,5 @@ root.mainloop()
 
 ## BUG REPORT
 # Editleme yapar iken numara boş olursa numarayı siliyor(bug mı normal mi anlamadım)
-# Arka plana hangi kod eklenirse eklensin resim ya farklı pencerede açılıyor yada butonları görmezden gelip sadece resim açılıyor
-# Scrollbar hata veriyor sebebini anlamadım (FIXED)
-# Scrollbar konumlandırılmasında sorun var sağ sola ilerliyor yukarı aşağı konumlanmıyor
+# Silme işlemi yaparken ID girilmezse hata veriyor(Normal)
+# Silme işlemi yaparken ID girilirse ve ID bulunamazsa hata veriyor(Normal)
