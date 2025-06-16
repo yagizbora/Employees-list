@@ -4,6 +4,8 @@ from tkinter import Scrollbar, messagebox
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
 
+database = "employees.db"
+
 root = tk.Tk()
 root.title("Employee Management")
 root.geometry("1366x768+50+50")
@@ -12,7 +14,7 @@ root.configure(bg="cyan")
 
 
 def create_table():
-    conn = sqlite3.connect("employees.db")
+    conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
     cursor.execute(
@@ -37,7 +39,7 @@ def add_employee():
 
     # name ve workmail girili ise işlemi gerçekleştir
     if name and workmail and PHONE:
-        conn = sqlite3.connect("employees.db")
+        conn = sqlite3.connect(database)
         cursor = conn.cursor()
 
         sql_query = (
@@ -61,7 +63,7 @@ def update_employee():
     workmail = entry_workmail.get()
     PHONE = entry_phone.get()
 
-    conn = sqlite3.connect("employees.db")
+    conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
     cursor.execute(
@@ -76,17 +78,22 @@ def update_employee():
 def delete_employee():
     selected_id = entry_id.get()
 
-    conn = sqlite3.connect("employees.db")
+    if selected_id.strip() == "":
+        messagebox.showwarning("Uyarı", "Lütfen silinecek çalışanın ID'sini girin!")
+        return
+
+    conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
     cursor.execute("DELETE FROM employees WHERE ID = ?", (selected_id,))
     messagebox.showwarning("Mesaj", "Çalışan silindi!")
+
     conn.commit()
     conn.close()
 
 
 def show_employees():
-    conn = sqlite3.connect("employees.db")
+    conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
     cursor.execute("SELECT * FROM employees")
