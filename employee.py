@@ -61,6 +61,10 @@ def update_employee():
     workmail = entry_workmail.get()
     PHONE = entry_phone.get()
 
+    if selected_id == "":
+        messagebox.showwarning("Uyarı", "Lütfen güncellenecek çalışan ID'sini girin!")
+        return
+
     conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
@@ -77,7 +81,10 @@ def delete_employee():
     try:
         selected_id = entry_id.get()
 
-        print(f"selected_id: {selected_id}")
+        
+        if selected_id == "":
+            messagebox.showwarning("Uyarı", "Lütfen güncellenecek çalışan ID'sini girin!")
+            return
 
         conn = sqlite3.connect(database)
         cursor = conn.cursor()
